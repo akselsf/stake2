@@ -1,0 +1,250 @@
+import { useState } from "react";
+
+const Mines = (props) => {
+  const [squareHeight, setSquareHeight] = useState(70);
+  let mineCount = 1;
+  let betAmount = 0;
+
+  const [betamount, setBetAmount] = useState(0);
+  const [minecount, setMineCount] = useState(1);
+  const [ingame, setIngame] = useState(false);
+  const [multiplier, setMultiplier] = useState("");
+  const [canSendReq, setCanSendReq] = useState(true);
+
+  const [board, setBoard] = useState([
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  ]);
+
+  const clickTile = async (e) => {
+    if (!canSendReq) return;
+    setCanSendReq(false);
+    if (ingame) {
+      const tilevalue = e.target.dataset.tilevalue;
+      const gamedata = await fetch("/api/games/mines/clicktile", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          tilevalue: tilevalue,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => data);
+      if (gamedata.gameinfo) {
+        e.target.style.animation = "wave 1s";
+
+        setMultiplier(
+          `${gamedata.gameinfo.multiplier}x - $${gamedata.gameinfo.reward}`
+        );
+
+        let b = [...board];
+        gamedata.gameinfo.opened.forEach((tile) => {
+          b[Number(tile)] = 1;
+        });
+        if (gamedata.gameinfo.gameover) {
+          setIngame(false);
+          gamedata.gameinfo.mines.forEach((tile) => {
+            b[Number(tile)] = 2;
+          });
+
+          setBoard(b);
+        }
+
+        setBoard(b);
+
+        setTimeout(() => {
+          e.target.style.animation = "";
+        }, 1000);
+      }
+    }
+    setCanSendReq(true);
+  };
+  const handleMineCountChange = (e) => {
+    if (ingame) return;
+    setMineCount(e.target.value);
+  };
+  const handleBetAmountChange = (e) => {
+    if (ingame) return;
+    setBetAmount(e.target.value);
+  };
+
+  const startGame = async () => {
+    if (!canSendReq) return;
+    setCanSendReq(false);
+    const res = await fetch("/api/games/mines/start", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        minecount: minecount,
+        betamount: betamount,
+      }),
+    }).then((res) => res.json());
+    setCanSendReq(true);
+    if (res.gameinfo) {
+      setMultiplier(`${res.gameinfo.multiplier}x - $${res.gameinfo.reward}`);
+      setIngame(true);
+
+      let b = [];
+      for (let i = 0; i < 25; i++) {
+        b.push(0);
+      }
+      setBoard(b);
+      props.setBalance(res.gameinfo.userbalance);
+    }
+  };
+
+  const cashOut = async () => {
+    if (!canSendReq) return;
+    setCanSendReq(false);
+    const res = await fetch("/api/games/mines/cashout", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }).then((res) => res.json());
+    setCanSendReq(true);
+    if (res.gameinfo) {
+      setIngame(false);
+      setMultiplier(
+        `Win: ${res.gameinfo.multiplier}x - $${res.gameinfo.reward}`
+      );
+      let b = [...board];
+      res.gameinfo.mines.forEach((tile) => {
+        b[Number(tile)] = 2;
+      });
+      setBoard(b);
+      props.setBalance(res.gameinfo.userbalance);
+    }
+  };
+
+  const getBoard = () => {
+    return (
+      <div>
+        {[0, 1, 2, 3, 4].map((row) => {
+          return (
+            <div key={row} style={{ display: "flex" }}>
+              {[0, 1, 2, 3, 4].map((col) => {
+                return (
+                  <div
+                    data-tilevalue={row * 5 + col}
+                    onClick={(e) => {
+                      e.target.style.animation = "wave 1s";
+                      setTimeout(() => {
+                        e.target.style.animation = "";
+                      }, 1000);
+                      clickTile(e);
+                    }}
+                    key={col}
+                    style={{
+                      width: `${squareHeight}px`,
+                      height: `${squareHeight}px`,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      border: "1px solid black",
+                      margin: "2px",
+                      borderRadius: "10px",
+                      backgroundColor:
+                        board[row * 5 + col] == 0
+                          ? "#B288C0"
+                          : board[row * 5 + col] == 1
+                          ? "green"
+                          : "red",
+                    }}
+                    className={"hover:cursor-pointer shadow-md"}
+                  ></div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+  return (
+    <div
+      style={{
+        color: "black",
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "30px",
+      }}
+    >
+      <div
+        style={{
+          width: "200px",
+          height: `${squareHeight * 5 + 2 * 10}px`,
+          backgroundColor: "#9A48D0",
+          border: "1px solid #63458A",
+          borderRadius: "10px",
+          marginRight: "5px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <p style={{ marginTop: "25px" }} className={"text-2xl font-bold "}>
+          Config
+        </p>
+        <div>
+          <p className={"text-lg font-bold "}>Mines</p>
+          <input
+            onChange={(e) => {
+              handleMineCountChange(e);
+            }}
+            disabled={ingame}
+            type="text"
+            placeholder={mineCount}
+            className={
+              "text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
+            }
+          ></input>
+        </div>
+        <div>
+          <p className={"text-lg font-bold "}>Bet</p>
+          <input
+            disabled={ingame}
+            onChange={(e) => {
+              handleBetAmountChange(e);
+            }}
+            type="text"
+            placeholder={betAmount}
+            className={
+              "text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
+            }
+          ></input>
+        </div>
+
+        {multiplier != "" ? <p>{multiplier}</p> : <></>}
+        <button
+          className={
+            " hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+          }
+          style={{
+            backgroundColor: "#588157",
+            color: "white",
+            marginBottom: "30px",
+          }}
+          onClick={
+            ingame
+              ? () => {
+                  cashOut();
+                }
+              : () => {
+                  startGame();
+                }
+          }
+        >
+          {ingame ? "Cash out" : "Bet"}
+        </button>
+      </div>
+      {getBoard()}
+    </div>
+  );
+};
+
+export default Mines;

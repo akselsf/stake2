@@ -1,0 +1,54 @@
+const mongoose = require("mongoose");
+const { MinesGame } = require("../../../../../mongooseschemas");
+import handleGetUser from "../../functions/getuser";
+
+const handleStartMines = async (req, res) => {
+  let { minecount, betamount } = req.body;
+  minecount = Number(minecount);
+  betamount = Number(betamount);
+  if (minecount > 24 || minecount < 1) {
+    res.status(400).json({ message: "Invalid mine count." });
+    return;
+  }
+  await mongoose.connect(process.env.DBURI);
+  const user = await handleGetUser(req, res);
+
+  if (user.balance >= betamount) {
+    user.balance -= betamount;
+    user.save();
+  } else {
+    res.status(401).json({ message: "Not enough balance." });
+    return;
+  }
+  let mines = new Set();
+  console.log(minecount);
+  while (mines.size < minecount) {
+    mines.add(Math.floor(Math.random() * 25));
+  }
+  mines = Array.from(mines).sort((a, b) => a - b);
+  await MinesGame.deleteMany({ email: user.email });
+
+  console.log(mines);
+  const newMinesGame = new MinesGame({
+    userid: user.githubuserid,
+    email: user.email,
+    betamount: betamount,
+    opened: "[]",
+    mines: JSON.stringify(mines),
+  });
+
+  await newMinesGame.save();
+  await mongoose.disconnect();
+  res.status(200).json({
+    gameinfo: {
+      gameover: false,
+      opened: [],
+      multiplier: 1,
+      reward: betamount,
+      userbalance: user.balance,
+    },
+  });
+  return;
+};
+
+module.exports = handleStartMines;

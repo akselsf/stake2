@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    function generateExponential(lambda) {
+      const u = Math.random();
+      const x = -Math.log(1 - u) / 0.352;
+      return x;
+    }
+    function generateCustomDistribution() {
+      let u = Math.random(); // generate a uniform random number between 0 and 1
+      let x = 1 / (1 - u); // transform u using the inverse CDF
+      return x;
+    }
+    function getCrashPoint(float) {
+      const houseEdge = 0.99; // 1% house edge
+      const floatPoint = (1e8 / (float * 1e8)) * houseEdge;
+      const crashPoint = Math.floor(floatPoint * 100) / 100;
+      return crashPoint;
+    }
+
+    // Usage example: generate 10 random numbers from an exponential distribution with lambda = 0.5
+    let count = 0;
+
+    for (let i = 0; i < 1000000; i++) {
+      // let x = generateExponential(0.352);
+      let x = getCrashPoint(Math.random());
+      if (x < 1.1) {
+        count++;
+      }
+    }
+    document.write(count);
+  </script>
+</html>
