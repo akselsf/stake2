@@ -1,14 +1,14 @@
 import { signOut } from "next-auth/react";
-
+import Link from "next/link";
 const NavBar = (props) => {
   return (
     <div
       className={"h-24 w-full flex items-center justify-between"}
       style={{ backgroundColor: "#9A48D0" }}
     >
-      <a href="/" className={"m-5 text-4xl font-semibold "}>
+      <Link href="/" className={"m-5 text-4xl font-semibold "}>
         Gamble.com
-      </a>
+      </Link>
 
       <div className="flex items-center justify-end">
         <p className={"m-5 mr-2 text-xl font-semibold"}>

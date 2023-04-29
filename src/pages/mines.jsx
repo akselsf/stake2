@@ -2,7 +2,7 @@ import Mines from "@/components/games/Mines";
 import MainPage from "@/components/MainPage";
 import { useSession } from "next-auth/react";
 import Login from "@/components/Login";
-const mines = () => {
+const MinesPage = () => {
   const { data: session } = useSession();
 
   return session ? (
@@ -12,4 +12,4 @@ const mines = () => {
   );
 };
 
-export default mines;
+export default MinesPage;

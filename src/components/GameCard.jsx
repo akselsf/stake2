@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Children } from "react";
 const GameCard = (props) => {
   return (
     <div
@@ -13,8 +15,7 @@ const GameCard = (props) => {
         animation: "gamecardspin 10s infinite",
       }}
     >
-      <a
-        href={`/${props.gamename.toLowerCase()}`}
+      <Link
         className={"text-lg font-bold"}
         style={{
           backgroundColor: "white",
@@ -23,9 +24,10 @@ const GameCard = (props) => {
           padding: "10px",
           borderRadius: "10px",
         }}
+        href={`/${props.gamename.toLowerCase()}`}
       >
         {props.gamename}
-      </a>
+      </Link>
     </div>
   );
 };

@@ -146,6 +146,7 @@ const Mines = (props) => {
                 return (
                   <MineTile
                     board={board}
+                    key={row * 5 + col}
                     value={row * 5 + col}
                     handleClick={clickTile}
                   />
