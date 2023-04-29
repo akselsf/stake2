@@ -30,7 +30,19 @@ const handleStartMines = async (req, res) => {
   }
   const game = games[0];
   const mines = JSON.parse(game.mines);
-
+  const opened = JSON.parse(game.opened);
+  if (opened.includes(tilevalue)) {
+    const multiplier = calculateMultiplier(mines.length, opened.length);
+    res.status(200).json({
+      gameinfo: {
+        gameover: false,
+        opened: opened,
+        multiplier: multiplier,
+        reward: Math.round(game.betamount * multiplier * 100) / 100,
+      },
+    });
+    return;
+  }
   if (mines.includes(tilevalue)) {
     await MinesGame.deleteOne({ email: user.email });
     await mongoose.disconnect();
@@ -46,7 +58,6 @@ const handleStartMines = async (req, res) => {
     return;
   }
 
-  const opened = JSON.parse(game.opened);
   opened.push(tilevalue);
   await MinesGame.updateOne(
     { email: user.email },

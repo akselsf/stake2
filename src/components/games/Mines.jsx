@@ -16,8 +16,9 @@ const Mines = (props) => {
 
   const clickTile = async (e, value) => {
     if (!canSendReq) return;
-    setCanSendReq(false);
     if (ingame) {
+      setCanSendReq(false);
+
       const tilevalue = value;
       const gamedata = await fetch("/api/games/mines/clicktile", {
         headers: {
