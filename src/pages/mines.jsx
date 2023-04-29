@@ -1,5 +1,3 @@
-import NavBar from "@/components/NavBar";
-import MainPageMain from "@/components/MainPageMain";
 import Mines from "@/components/games/Mines";
 import MainPage from "@/components/MainPage";
 import { useSession } from "next-auth/react";

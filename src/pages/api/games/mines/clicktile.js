@@ -4,15 +4,27 @@ import calculateMultiplier from "./calculateMultiplier";
 import handleGetUser from "../../functions/getuser";
 
 const handleStartMines = async (req, res) => {
+  let { tilevalue } = req.body;
+  if (isNaN(tilevalue)) {
+    res.status(400).json({ errormessage: "dont send shit requests" });
+    return;
+  }
+  tilevalue = Number(tilevalue);
+  if (tilevalue < 0 || tilevalue > 24) {
+    res.status(400).json({ errormessage: "dont send shit requests" });
+    return;
+  }
+
   await mongoose.connect(process.env.DBURI);
   const user = await handleGetUser(req, res);
-  let { tilevalue } = req.body;
 
   const games = await MinesGame.find({ email: user.email });
-  tilevalue = Number(tilevalue);
+
   if (games.length != 1) {
     await mongoose.disconnect();
-    res.send(400);
+    res.status(400).json({
+      errormessage: "No games started",
+    });
 
     return;
   }

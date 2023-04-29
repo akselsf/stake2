@@ -4,13 +4,22 @@ import handleGetUser from "../../functions/getuser";
 
 const handleStartLimbo = async (req, res) => {
   let { targetmultiplier, betamount } = req.body;
+  if (isNaN(targetmultiplier) || isNaN(betamount)) {
+    res.status(400).json({ message: "Invalid inputs." });
+    return;
+  }
 
   targetmultiplier = Number(targetmultiplier);
   betamount = Number(betamount);
   if (targetmultiplier <= 1) {
-    res.status(400).json({ message: "Invalid target." });
+    res.status(400).json({ errormessage: "Invalid target." });
     return;
   }
+  if (betamount < 0) {
+    res.status(400).json({ errormessage: "Invalid bet amount." });
+    return;
+  }
+
   await mongoose.connect(process.env.DBURI);
   const user = await handleGetUser(req, res);
 
@@ -18,7 +27,7 @@ const handleStartLimbo = async (req, res) => {
     user.balance -= betamount;
     await user.save();
   } else {
-    res.status(401).json({ message: "Not enough balance." });
+    res.status(400).json({ errormessage: "Not enough balance." });
     return;
   }
 

@@ -4,11 +4,18 @@ import handleGetUser from "../../functions/getuser";
 
 const handleStartMines = async (req, res) => {
   let { minecount, betamount } = req.body;
+  if (isNaN(minecount) || isNaN(betamount)) {
+    res.status(400).json({ errormessage: "Invalid input." });
+    return;
+  }
   minecount = Number(minecount);
   betamount = Number(betamount);
+
   if (minecount > 24 || minecount < 1) {
-    res.status(400).json({ message: "Invalid mine count." });
+    res.status(400).json({ errormessage: "Invalid mine count." });
     return;
+  } else if (betamount < 0) {
+    res.status(400).json({ errormessage: "Invalid bet amount." });
   }
   await mongoose.connect(process.env.DBURI);
   const user = await handleGetUser(req, res);
@@ -17,11 +24,11 @@ const handleStartMines = async (req, res) => {
     user.balance -= betamount;
     user.save();
   } else {
-    res.status(401).json({ message: "Not enough balance." });
+    res.status(401).json({ errormessage: "Not enough balance." });
     return;
   }
+
   let mines = new Set();
-  console.log(minecount);
   while (mines.size < minecount) {
     mines.add(Math.floor(Math.random() * 25));
   }

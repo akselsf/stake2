@@ -4,16 +4,17 @@ const RollBar = (props) => {
       style={{
         height: "20px",
         width: "300px",
-        backgroundColor: props.aboveTarget ? "darkgreen" : "darkred",
+        backgroundColor: props.aboveTarget ? "green" : "rgb(230, 0, 0)",
         boxShadow: "0px 0px 3px 0px rgba(0,0,0,0.75)",
         position: "relative",
+        overflow: "hidden",
       }}
     >
       <div
         style={{
           height: "100%",
           width: props.target * 300 + "px",
-          backgroundColor: props.aboveTarget ? "darkred" : "darkgreen",
+          backgroundColor: props.aboveTarget ? "rgb(230, 0, 0)" : "green",
         }}
       ></div>
       {props.rollresult != 0 ? (

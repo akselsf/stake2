@@ -4,12 +4,23 @@ import handleGetUser from "../../functions/getuser";
 
 const handleStartDice = async (req, res) => {
   let { target, above, betamount } = req.body;
+  if (isNaN(target) || isNaN(betamount)) {
+    res.status(400).json({ errormessage: "Invalid target or betamount." });
+    return;
+  }
+  if (above != false && above != true) {
+    res.status(400).json({ errormessage: "dont send shit requests" });
+    return;
+  }
 
   target = Number(target);
   betamount = Number(betamount);
   if (target <= 0 || target >= 1) {
-    res.status(400).json({ message: "Invalid target." });
+    res.status(400).json({ errormessage: "Invalid target." });
     return;
+  }
+  if (betamount < 0) {
+    res.status(400).json({ errormessage: "Invalid betamount" });
   }
   await mongoose.connect(process.env.DBURI);
   const user = await handleGetUser(req, res);
@@ -18,7 +29,7 @@ const handleStartDice = async (req, res) => {
     user.balance -= betamount;
     await user.save();
   } else {
-    res.status(401).json({ message: "Not enough balance." });
+    res.status(401).json({ errormessage: "Not enough balance." });
     return;
   }
 

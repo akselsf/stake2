@@ -10,7 +10,7 @@ const handleCashOut = async (req, res) => {
   const games = await MinesGame.find({ email: user.email });
   if (games.length != 1) {
     await mongoose.disconnect();
-    res.status(400);
+    res.status(400).json({ errormessage: "no games started" });
     return;
   }
 
@@ -20,7 +20,7 @@ const handleCashOut = async (req, res) => {
   const opened = JSON.parse(game.opened);
 
   if (opened.length == 0) {
-    res.status(400).json({ message: "You have not opened any tiles." });
+    res.status(400).json({ errormessage: "You have not opened any tiles." });
     return;
   }
   const betamount = game.betamount;

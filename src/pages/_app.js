@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "@/styles/mines.css";
+import "@/styles/gamecard.css";
 import { SessionProvider } from "next-auth/react";
 
 export default function App({

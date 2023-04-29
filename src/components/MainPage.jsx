@@ -1,8 +1,8 @@
-import NavBar from "./NavBar";
+import NavBar from "./nav/NavBar";
 import MainPageMain from "./MainPageMain";
 import { useEffect, useState } from "react";
-import DepositPopup from "./DepositPopup";
-import WithdrawPopup from "./WithdrawPopup";
+import DepositPopup from "./nav/DepositPopup";
+import WithdrawPopup from "./nav/WithdrawPopup";
 import GameCards from "./GameCards";
 
 import getBalance from "@/functions/getBalance";

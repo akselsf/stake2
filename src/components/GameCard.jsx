@@ -10,6 +10,7 @@ const GameCard = (props) => {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "10px",
+        animation: "gamecardspin 10s infinite",
       }}
     >
       <a
@@ -17,6 +18,7 @@ const GameCard = (props) => {
         className={"text-lg font-bold"}
         style={{
           backgroundColor: "white",
+
           border: "1px solid black",
           padding: "10px",
           borderRadius: "10px",

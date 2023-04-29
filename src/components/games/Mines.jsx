@@ -1,7 +1,6 @@
 import { useState } from "react";
-
+import MineTile from "./mines/MineTile";
 const Mines = (props) => {
-  const [squareHeight, setSquareHeight] = useState(70);
   let mineCount = 1;
   let betAmount = 0;
 
@@ -15,11 +14,11 @@ const Mines = (props) => {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   ]);
 
-  const clickTile = async (e) => {
+  const clickTile = async (e, value) => {
     if (!canSendReq) return;
     setCanSendReq(false);
     if (ingame) {
-      const tilevalue = e.target.dataset.tilevalue;
+      const tilevalue = value;
       const gamedata = await fetch("/api/games/mines/clicktile", {
         headers: {
           "Content-Type": "application/json",
@@ -28,9 +27,14 @@ const Mines = (props) => {
         body: JSON.stringify({
           tilevalue: tilevalue,
         }),
-      })
-        .then((res) => res.json())
-        .then((data) => data);
+      }).then((res) => res.json());
+      setCanSendReq(true);
+      if (gamedata.errormessage) {
+        props.setError(gamedata.errormessage);
+        return;
+      } else {
+        props.setError("");
+      }
       if (gamedata.gameinfo) {
         e.target.style.animation = "wave 1s";
 
@@ -58,7 +62,6 @@ const Mines = (props) => {
         }, 1000);
       }
     }
-    setCanSendReq(true);
   };
   const handleMineCountChange = (e) => {
     if (ingame) return;
@@ -83,6 +86,13 @@ const Mines = (props) => {
       }),
     }).then((res) => res.json());
     setCanSendReq(true);
+    if (res.errormessage) {
+      props.setError(res.errormessage);
+      return;
+    } else {
+      props.setError("");
+    }
+
     if (res.gameinfo) {
       setMultiplier(`${res.gameinfo.multiplier}x - $${res.gameinfo.reward}`);
       setIngame(true);
@@ -106,6 +116,12 @@ const Mines = (props) => {
       method: "POST",
     }).then((res) => res.json());
     setCanSendReq(true);
+    if (res.errormessage) {
+      props.setError(res.errormessage);
+      return;
+    } else {
+      props.setError("");
+    }
     if (res.gameinfo) {
       setIngame(false);
       setMultiplier(
@@ -128,34 +144,11 @@ const Mines = (props) => {
             <div key={row} style={{ display: "flex" }}>
               {[0, 1, 2, 3, 4].map((col) => {
                 return (
-                  <div
-                    data-tilevalue={row * 5 + col}
-                    onClick={(e) => {
-                      e.target.style.animation = "wave 1s";
-                      setTimeout(() => {
-                        e.target.style.animation = "";
-                      }, 1000);
-                      clickTile(e);
-                    }}
-                    key={col}
-                    style={{
-                      width: `${squareHeight}px`,
-                      height: `${squareHeight}px`,
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      border: "1px solid black",
-                      margin: "2px",
-                      borderRadius: "10px",
-                      backgroundColor:
-                        board[row * 5 + col] == 0
-                          ? "#B288C0"
-                          : board[row * 5 + col] == 1
-                          ? "green"
-                          : "red",
-                    }}
-                    className={"hover:cursor-pointer shadow-md"}
-                  ></div>
+                  <MineTile
+                    board={board}
+                    value={row * 5 + col}
+                    handleClick={clickTile}
+                  />
                 );
               })}
             </div>
@@ -176,7 +169,7 @@ const Mines = (props) => {
       <div
         style={{
           width: "200px",
-          height: `${squareHeight * 5 + 2 * 10}px`,
+          height: "370px",
           backgroundColor: "#9A48D0",
           border: "1px solid #63458A",
           borderRadius: "10px",

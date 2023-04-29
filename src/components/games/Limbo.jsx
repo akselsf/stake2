@@ -43,8 +43,14 @@ const Mines = (props) => {
     }).then((res) => res.json());
     setCanSendReq(true);
     setIngame(false);
+    if (res.errormessage) {
+      props.setError(res.errormessage);
+      return;
+    } else {
+      props.setError("");
+    }
+
     if (res.gameinfo) {
-      console.log(res.gameinfo);
       props.setBalance(res.gameinfo.userbalance);
       setGameMultiplier(res.gameinfo.multiplier);
       setGameResult(res.gameinfo.result);
