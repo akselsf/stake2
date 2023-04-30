@@ -1,5 +1,6 @@
 import { useState } from "react";
 import MineTile from "./mines/MineTile";
+import { Box, Heading, Input, Button, Text } from "@chakra-ui/react";
 const Mines = (props) => {
   let mineCount = 1;
   let betAmount = 0;
@@ -44,6 +45,7 @@ const Mines = (props) => {
         );
 
         let b = [...board];
+
         gamedata.gameinfo.opened.forEach((tile) => {
           b[Number(tile)] = 1;
         });
@@ -168,6 +170,7 @@ const Mines = (props) => {
         marginTop: "30px",
       }}
     >
+      {/*
       <div
         style={{
           width: "200px",
@@ -237,6 +240,69 @@ const Mines = (props) => {
           {ingame ? "Cash out" : "Bet"}
         </button>
       </div>
+      */}
+      <Box
+        position={"relative"}
+        borderWidth="1px"
+        borderRadius="lg"
+        height={"370px"}
+        width={"240px"}
+        marginRight={"5px"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        shadow={"lg"}
+      >
+        <Heading size={"md"} marginTop={5}>
+          Config
+        </Heading>
+        <Box marginTop={3} width={"80%"}>
+          <Text fontSize={"md"}>Mines</Text>
+          <Input
+            borderColor={"purple"}
+            disabled={ingame}
+            focusBorderColor="purple"
+            onChange={(e) => {
+              handleMineCountChange(e);
+            }}
+            type="text"
+            placeholder={mineCount}
+          ></Input>
+        </Box>
+        <Box marginTop={3} width={"80%"}>
+          <Text fontSize={"md"}>Bet</Text>
+          <Input
+            borderColor={"purple"}
+            disabled={ingame}
+            focusBorderColor="purple"
+            onChange={(e) => {
+              handleBetAmountChange(e);
+            }}
+            type="text"
+            placeholder={0}
+          ></Input>
+        </Box>
+        <Text marginTop={5}>
+          {multiplier != "" ? <p>{multiplier}</p> : <></>}
+        </Text>
+
+        <Button
+          position={"absolute"}
+          colorScheme="purple"
+          bottom={5}
+          onClick={
+            ingame
+              ? () => {
+                  cashOut();
+                }
+              : () => {
+                  startGame();
+                }
+          }
+        >
+          {ingame ? "Cash out" : "Bet"}
+        </Button>
+      </Box>
       {getBoard()}
     </div>
   );

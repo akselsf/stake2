@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import DepositPopup from "./nav/DepositPopup";
 import WithdrawPopup from "./nav/WithdrawPopup";
 import GameCards from "./GameCards";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Divider } from "@chakra-ui/react";
 
 import getBalance from "@/functions/getBalance";
 const MainPage = (props) => {
@@ -30,13 +32,14 @@ const MainPage = (props) => {
   };
 
   return (
-    <div>
+    <ChakraProvider>
       <NavBar
         balance={balance}
         showWithdraw={showWithdraw}
         setBalance={setBalance}
         showDeposit={showDeposit}
       />
+      <Divider orientation="horizontal" color={"purple"} opacity={1} />
       {depositOpen ? (
         <DepositPopup setBalance={setBalance} close={resetPopup} />
       ) : null}
@@ -48,7 +51,7 @@ const MainPage = (props) => {
       ) : (
         <GameCards />
       )}
-    </div>
+    </ChakraProvider>
   );
 };
 

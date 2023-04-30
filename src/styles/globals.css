@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
+/* rainbow fade gradient background */
 :root {
-  background-color: #e4b7e5;
-}
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
 }

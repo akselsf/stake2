@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react";
-
+import { Button } from "@chakra-ui/react";
 const Login = () => {
   return (
     <div
@@ -8,17 +8,15 @@ const Login = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        height: "100vh",
       }}
     >
-      <p className={"text-4xl font-bold mt-5"}>Gamble.com</p>
-      <button
-        className={
-          "mt-5 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        }
-        onClick={() => signIn()}
-      >
+      <p style={{ margin: 5 }} className={"text-4xl font-bold mt-5"}>
+        Gamble.com
+      </p>
+      <Button onClick={() => signIn()} margin={5} padding={5}>
         Log in / Registrer
-      </button>
+      </Button>
     </div>
   );
 };
