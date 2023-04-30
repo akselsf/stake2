@@ -10,6 +10,7 @@ const Mines = (props) => {
   const [ingame, setIngame] = useState(false);
   const [multiplier, setMultiplier] = useState("");
   const [canSendReq, setCanSendReq] = useState(true);
+  const [canCashOut, setCanCashOut] = useState(false);
 
   const [board, setBoard] = useState([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -56,6 +57,9 @@ const Mines = (props) => {
           });
 
           setBoard(b);
+          setCanCashOut(false);
+        } else {
+          setCanCashOut(true);
         }
 
         setBoard(b);
@@ -99,6 +103,7 @@ const Mines = (props) => {
     if (res.gameinfo) {
       setMultiplier(`${res.gameinfo.multiplier}x - $${res.gameinfo.reward}`);
       setIngame(true);
+      setCanCashOut(false);
 
       let b = [];
       for (let i = 0; i < 25; i++) {
@@ -126,6 +131,7 @@ const Mines = (props) => {
       props.setError("");
     }
     if (res.gameinfo) {
+      setCanCashOut(false);
       setIngame(false);
       setMultiplier(
         `Win: ${res.gameinfo.multiplier}x - $${res.gameinfo.reward}`
@@ -170,77 +176,6 @@ const Mines = (props) => {
         marginTop: "30px",
       }}
     >
-      {/*
-      <div
-        style={{
-          width: "200px",
-          height: "370px",
-          backgroundColor: "#9A48D0",
-          border: "1px solid #63458A",
-          borderRadius: "10px",
-          marginRight: "5px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <p style={{ marginTop: "25px" }} className={"text-2xl font-bold "}>
-          Config
-        </p>
-        <div>
-          <p className={"text-lg font-bold "}>Mines</p>
-          <input
-            onChange={(e) => {
-              handleMineCountChange(e);
-            }}
-            disabled={ingame}
-            type="text"
-            placeholder={mineCount}
-            className={
-              "text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
-            }
-          ></input>
-        </div>
-        <div>
-          <p className={"text-lg font-bold "}>Bet</p>
-          <input
-            disabled={ingame}
-            onChange={(e) => {
-              handleBetAmountChange(e);
-            }}
-            type="text"
-            placeholder={betAmount}
-            className={
-              "text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
-            }
-          ></input>
-        </div>
-
-        {multiplier != "" ? <p>{multiplier}</p> : <></>}
-        <button
-          className={
-            " hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-          }
-          style={{
-            backgroundColor: "#588157",
-            color: "white",
-            marginBottom: "30px",
-          }}
-          onClick={
-            ingame
-              ? () => {
-                  cashOut();
-                }
-              : () => {
-                  startGame();
-                }
-          }
-        >
-          {ingame ? "Cash out" : "Bet"}
-        </button>
-      </div>
-      */}
       <Box
         position={"relative"}
         borderWidth="1px"
@@ -290,6 +225,7 @@ const Mines = (props) => {
           position={"absolute"}
           colorScheme="purple"
           bottom={5}
+          isDisabled={!canCashOut && ingame && canSendReq}
           onClick={
             ingame
               ? () => {

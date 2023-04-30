@@ -1,3 +1,5 @@
+import { Box, Text } from "@chakra-ui/react";
+
 const TargetInfo = (props) => {
   const getMultiplier = (target, above) => {
     return Math.round((above ? 1 / (1 - target) : 1 / target) * 100) / 100;
@@ -7,38 +9,23 @@ const TargetInfo = (props) => {
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "50px",
-        backgroundColor: "#9A48D0",
-
-        border: "1px solid #63458A",
-        borderRadius: "10px",
-        position: "absolute",
-        bottom: "0px",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    <Box
+      width="100%"
+      height="50px"
+      position="absolute"
+      bottom="0px"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      borderTop={"1px solid purple"}
     >
-      <p
-        style={{
-          width: "50%",
-          textAlign: "center",
-        }}
-      >
+      <Text width="50%" textAlign="center" overflow={"hidden"} noOfLines={1}>
         Return: {getMultiplier(props.target, props.aboveTarget)}x
-      </p>
-      <p
-        style={{
-          width: "50%",
-          textAlign: "center",
-        }}
-      >
+      </Text>
+      <Text width="50%" textAlign="center">
         Chance: {getChance(props.target, props.aboveTarget)}%
-      </p>
-    </div>
+      </Text>
+    </Box>
   );
 };
 

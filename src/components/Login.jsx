@@ -1,23 +1,21 @@
 import { signIn } from "next-auth/react";
-import { Button } from "@chakra-ui/react";
+import { Button, Box, Heading } from "@chakra-ui/react";
 const Login = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
     >
-      <p style={{ margin: 5 }} className={"text-4xl font-bold mt-5"}>
+      <Heading marginBottom={5} size={"2xl"}>
         Gamble.com
-      </p>
-      <Button onClick={() => signIn()} margin={5} padding={5}>
+      </Heading>
+      <Button colorScheme="gray" onClick={() => signIn()}>
         Log in / Registrer
       </Button>
-    </div>
+    </Box>
   );
 };
 export default Login;

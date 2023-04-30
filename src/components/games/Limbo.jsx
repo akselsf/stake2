@@ -1,8 +1,8 @@
 import { useState } from "react";
 import TargetInfo from "./limbo/TargetInfo";
-const Mines = (props) => {
-  const [squareHeight, setSquareHeight] = useState(70);
-  let mineCount = 1;
+
+import { Button, Box, Heading, Text, Input } from "@chakra-ui/react";
+const Limbo = (props) => {
   let betAmount = 0;
 
   const [betamount, setBetAmount] = useState(0);
@@ -12,6 +12,7 @@ const Mines = (props) => {
   const [gameResult, setGameResult] = useState(0);
   const [canSendReq, setCanSendReq] = useState(true);
   const [gameReward, setGameReward] = useState(0);
+  const [gameHistory, setGameHistory] = useState([]);
 
   const handleTargetMultiplierChange = (e) => {
     if (ingame) return;
@@ -55,73 +56,63 @@ const Mines = (props) => {
       setGameMultiplier(res.gameinfo.multiplier);
       setGameResult(res.gameinfo.result);
       setGameReward(res.gameinfo.reward);
+      let g = [...gameHistory];
+      g.push({
+        multiplier: res.gameinfo.multiplier,
+        result: res.gameinfo.result,
+      });
+      setGameHistory(g);
     }
   };
 
   return (
-    <div
-      style={{
-        color: "black",
-        display: "flex",
-        justifyContent: "center",
-        marginTop: "30px",
-      }}
-    >
-      <div
-        style={{
-          width: "200px",
-          height: `${squareHeight * 5 + 2 * 10}px`,
-          backgroundColor: "#9A48D0",
-          border: "1px solid #63458A",
-          borderRadius: "10px",
-          marginRight: "5px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+    <Box display="flex" justifyContent="center" marginTop="30px">
+      <Box
+        position={"relative"}
+        borderWidth="1px"
+        borderRadius="lg"
+        height={"370px"}
+        width={"240px"}
+        marginRight={"5px"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        shadow={"lg"}
       >
-        <p style={{ marginTop: "25px" }} className={"text-2xl font-bold "}>
+        <Heading size={"md"} marginTop={5}>
           Config
-        </p>
-        <div>
-          <p className={"text-lg font-bold "}>Target multiplier</p>
-          <input
+        </Heading>
+        <Box marginTop={3} width={"80%"}>
+          <Text fontSize={"md"}>Target</Text>
+          <Input
+            borderColor={"purple"}
+            disabled={ingame}
+            focusBorderColor="purple"
             onChange={(e) => {
               handleTargetMultiplierChange(e);
             }}
-            disabled={ingame}
             type="text"
-            placeholder={mineCount}
-            className={
-              "text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
-            }
-          ></input>
-        </div>
-        <div>
-          <p className={"text-lg font-bold "}>Bet</p>
-          <input
+            placeholder={2}
+          ></Input>
+        </Box>
+        <Box marginTop={3} width={"80%"}>
+          <Text fontSize={"md"}>Bet</Text>
+          <Input
+            borderColor={"purple"}
             disabled={ingame}
+            focusBorderColor="purple"
             onChange={(e) => {
               handleBetAmountChange(e);
             }}
             type="text"
-            placeholder={betAmount}
-            className={
-              "text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
-            }
-          ></input>
-        </div>
+            placeholder={0}
+          ></Input>
+        </Box>
 
-        <button
-          className={
-            " hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
-          }
-          style={{
-            backgroundColor: "#588157",
-            color: "white",
-            marginBottom: "30px",
-          }}
+        <Button
+          position={"absolute"}
+          colorScheme="purple"
+          bottom={5}
           onClick={
             ingame
               ? () => {}
@@ -129,44 +120,34 @@ const Mines = (props) => {
                   startGame();
                 }
           }
+          isDisabled={ingame}
         >
           {ingame ? "Wait" : "Bet"}
-        </button>
-      </div>
-      <div
-        style={{
-          width: "370px",
-          height: "370px",
-          padding: "10px",
-          backgroundColor: "#9A48D0",
-          border: "1px solid #63458A",
-          borderRadius: "10px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          position: "relative",
-        }}
+        </Button>
+      </Box>
+      <Box
+        position={"relative"}
+        borderWidth="1px"
+        borderRadius="lg"
+        height={"370px"}
+        width={"370px"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        shadow={"lg"}
       >
-        <p
-          className={"text-4xl font-bold"}
-          style={{
-            color: gameResult ? "darkgreen" : "darkred",
-            marginBottom: "10px",
-          }}
-        >
+        <Heading size={"2xl"} color={gameResult ? "green" : "red"} margin={3}>
           {gameMultiplier}x
-        </p>
-        <p
-          className={"text-xl font-bold"}
-          style={{ color: gameResult ? "darkgreen" : "darkred" }}
-        >
+        </Heading>
+        <Heading size={"md"} color={gameResult ? "green" : "red"}>
           + ${gameReward}
-        </p>
+        </Heading>
+
         <TargetInfo target={targetMultiplier} />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
-export default Mines;
+export default Limbo;
