@@ -39,7 +39,7 @@ const NavBar = (props) => {
           </MenuButton>
           <MenuList>
             <MenuItem>
-              <Link href="/Mines" position={"relative"}>
+              <Link href="/mines" position={"relative"}>
                 Mines
               </Link>
             </MenuItem>
