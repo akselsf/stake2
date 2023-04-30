@@ -24,6 +24,10 @@ const handleStartDice = async (req, res) => {
   }
   await mongoose.connect(process.env.DBURI);
   const user = await handleGetUser(req, res);
+  if (user === null) {
+    res.status(400).json({ errormessage: "error finding user" });
+    return;
+  }
 
   if (user.balance >= betamount && betamount >= 0) {
     user.balance -= betamount;

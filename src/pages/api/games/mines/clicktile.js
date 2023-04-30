@@ -17,7 +17,10 @@ const handleStartMines = async (req, res) => {
 
   await mongoose.connect(process.env.DBURI);
   const user = await handleGetUser(req, res);
-
+  if (user === null) {
+    res.status(400).json({ errormessage: "error finding user" });
+    return;
+  }
   const games = await MinesGame.find({ email: user.email });
 
   if (games.length != 1) {

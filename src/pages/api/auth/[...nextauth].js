@@ -33,7 +33,10 @@ export default NextAuth({
         });
         await newUser.save();
       }
-      await mongoose.disconnect();
+      const DBuser2 = await DB_User.find({ userid: token.sub });
+      session.user.balance = DBuser2[0].balance;
+      session.user.githubuserid = DBuser2[0].userid;
+
       session.accessToken = token.accessToken;
 
       return Promise.resolve(session);

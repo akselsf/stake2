@@ -9,7 +9,11 @@ import {
   MenuList,
   Link,
 } from "@chakra-ui/react";
-import { ArrowRightIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import getBalance from "@/functions/getBalance";
+import { ChevronDownIcon } from "@chakra-ui/icons";
+import DepositPopup from "./DepositPopup";
+import WithdrawPopup from "./WithdrawPopup";
 
 const NavBar = (props) => {
   return (
@@ -51,21 +55,8 @@ const NavBar = (props) => {
             </MenuItem>
           </MenuList>
         </Menu>
-        <Button
-          onClick={() => props.showWithdraw()}
-          marginLeft={5}
-          colorScheme="purple"
-        >
-          Withdraw
-        </Button>
-
-        <Button
-          onClick={() => props.showDeposit()}
-          margin={5}
-          colorScheme="purple"
-        >
-          Deposit
-        </Button>
+        <WithdrawPopup setBalance={props.setBalance} />
+        <DepositPopup setBalance={props.setBalance} />
 
         <Button onClick={() => signOut()} marginRight={20} colorScheme="red">
           Sign out

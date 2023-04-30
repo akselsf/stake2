@@ -1,38 +1,31 @@
 const mongoose = require("mongoose");
 
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "./auth/[...nextauth]";
+import handleGetUser from "./functions/getuser";
 
 const handleWithdraw = async (req, res) => {
-  const session = await getServerSession(req, res, authOptions);
-
-  if (!session) {
-    res.status(401).json({ message: "You must be logged in." });
-    return;
+  let { amount } = req.body;
+  if (isNaN(amount) || amount <= 0) {
+    res.status(400).json({ errormessage: "invalid amount" });
   }
+  amount = Number(amount);
 
-  const { amount } = req.body;
   await mongoose.connect(process.env.DBURI);
-
-  const dbuser = await mongoose
-    .model("User")
-    .find({ email: session.user.email });
-  if (dbuser.length === 0) {
-    res.status(401).json({ message: "You must be logged in." });
+  const dbuser = await handleGetUser(req, res);
+  if (dbuser === null) {
+    res.status(400).json({ errormessage: "error finding user" });
     return;
   }
-  if (dbuser[0].balance < amount) {
-    res.status(401).json({ message: "You don't have enough money." });
+  if (dbuser.balance < amount) {
+    res.status(401).json({ errormessage: "You don't have enough money." });
     return;
   }
-  dbuser[0].balance =
-    Math.round((dbuser[0].balance - Number(amount)) * 100) / 100;
-  await dbuser[0].save();
-  const balance = dbuser[0].balance;
+  dbuser.balance = Math.round((dbuser.balance - amount) * 100) / 100;
+  await dbuser.save();
+  const balance = dbuser.balance;
 
   await mongoose.disconnect();
 
-  res.status(200).json({ balance });
+  res.status(200).json({ balance: balance });
 };
 
 module.exports = handleWithdraw;

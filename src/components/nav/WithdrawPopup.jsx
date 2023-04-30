@@ -1,7 +1,25 @@
+import React from "react";
+import { useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
+import { FormLabel, Input } from "@chakra-ui/react";
+
 const WithdrawPopup = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const initialRef = React.useRef(null);
+
   let amount = 0;
 
-  const withdraw = async (amount) => {
+  const deposit = async (amount) => {
     await fetch("/api/withdraw", {
       method: "POST",
       headers: {
@@ -13,55 +31,53 @@ const WithdrawPopup = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.balance) {
+        if (data.balance !== undefined) {
           props.setBalance(data.balance);
         }
-        props.close();
       });
   };
-
   return (
-    <div
-      className="mx-auto bg-white fixed inset-x-0 top-1/4 w-64 z-50 h-64 "
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-evenly",
-        border: "1px solid black",
-        borderRadius: "20px",
-      }}
-    >
-      <p style={{ textAlign: "center", fontSize: "20px", color: "black" }}>
+    <>
+      <Button colorScheme={"purple"} onClick={onOpen} marginLeft={5}>
         Withdraw
-      </p>
-      <input
-        onChange={(e) => (amount = e.target.value)}
-        style={{
-          width: "150px",
-          border: ".5px solid black",
-          height: "30px",
-          marginLeft: "auto",
-          marginRight: "auto",
-          padding: "8px",
-          color: "black",
-          textAlign: "center",
-          borderRadius: "9px",
-        }}
-        type="text"
-      ></input>
-      <button
-        onClick={() => withdraw(amount)}
-        style={{
-          color: "black",
-          border: ".5px solid",
-          width: "100px",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        Confirm
-      </button>
-    </div>
+      </Button>
+
+      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent width={"300px"}>
+          <ModalHeader margin={"0 auto"}>Withdraw</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody
+            pb={6}
+            display="flex"
+            flexDir={"column"}
+            alignItems={"center"}
+          >
+            <FormLabel>Amount</FormLabel>
+            <Input
+              ref={initialRef}
+              width={"90%"}
+              onChange={(e) => (amount = e.target.value)}
+              placeholder="Amount"
+            />
+          </ModalBody>
+
+          <ModalFooter display="flex" justifyContent={"center"}>
+            <Button
+              colorScheme="purple"
+              onClick={() => {
+                onClose();
+                deposit(amount);
+              }}
+              mr={3}
+            >
+              Confirm
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 
