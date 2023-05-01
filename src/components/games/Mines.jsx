@@ -154,6 +154,7 @@ const Mines = (props) => {
               {[0, 1, 2, 3, 4].map((col) => {
                 return (
                   <MineTile
+                    canSendReq={canSendReq}
                     board={board}
                     key={row * 5 + col}
                     value={row * 5 + col}
