@@ -2,9 +2,8 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { useImperativeHandle } from "react";
 import { forwardRef } from "react";
+import Plinko from "../Plinko";
 const PlinkoGrid = forwardRef((props, ref) => {
-  const gameSize = 500;
-
   const [ballPos, setBallPos] = useState(0);
 
   useImperativeHandle(ref, () => ({
@@ -90,4 +89,5 @@ const PlinkoGrid = forwardRef((props, ref) => {
     </Box>
   );
 });
+PlinkoGrid.displayName = "PlinkoGrid";
 export default PlinkoGrid;
