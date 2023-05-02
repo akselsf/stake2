@@ -10,7 +10,13 @@ const MineTile = (props) => {
         }, 1000);
         props.handleClick(e, props.value);
       }}
-      _hover={{ backgroundColor: "purple" }}
+      _hover={
+        props.board[props.value] == 0
+          ? "purple"
+          : props.board[props.value] == 1
+          ? "green"
+          : "red"
+      }
       key={props.value}
       _disabled={{ opacity: 1, cursor: "not-allowed" }}
       width="70px"

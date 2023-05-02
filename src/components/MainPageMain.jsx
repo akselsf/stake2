@@ -1,6 +1,7 @@
 import Mines from "./games/Mines";
 import Limbo from "./games/Limbo";
 import Dice from "./games/Dice";
+import Plinko from "./games/Plinko";
 import GameCards from "./GameCards";
 import { useState } from "react";
 const MainPageMain = (props) => {
@@ -16,6 +17,9 @@ const MainPageMain = (props) => {
       break;
     case "Dice":
       game = <Dice setBalance={props.setBalance} setError={setErrorMsg} />;
+      break;
+    case "Plinko":
+      game = <Plinko setBalance={props.setBalance} setError={setErrorMsg} />;
       break;
     default:
   }

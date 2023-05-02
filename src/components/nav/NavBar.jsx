@@ -53,6 +53,11 @@ const NavBar = (props) => {
                 Dice
               </Link>
             </MenuItem>
+            <MenuItem>
+              <Link href="/plinko" position={"relative"}>
+                Plinko
+              </Link>
+            </MenuItem>
           </MenuList>
         </Menu>
         <WithdrawPopup setBalance={props.setBalance} />

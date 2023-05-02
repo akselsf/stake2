@@ -1,6 +1,6 @@
 import GameCard from "./GameCard";
 const GameCards = (props) => {
-  const games = ["Mines", "Limbo", "Dice"];
+  const games = ["Mines", "Limbo", "Dice", "Plinko"];
   return (
     <div
       style={{
