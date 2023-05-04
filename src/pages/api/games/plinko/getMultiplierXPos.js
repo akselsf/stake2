@@ -1,5 +1,4 @@
 const getMultiPlierXPos = (x, size) => {
-  console.log(x);
   if (size == 16) {
     if (x == 0 || x == 16) {
       return 1000;
@@ -14,7 +13,7 @@ const getMultiPlierXPos = (x, size) => {
     } else if (x == 5 || x == 11) {
       return 2;
     } else if (x == 6 || x == 10) {
-      return 1.5;
+      return 0.2;
     } else {
       return 0.2;
     }

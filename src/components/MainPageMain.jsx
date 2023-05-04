@@ -2,12 +2,13 @@ import Mines from "./games/Mines";
 import Limbo from "./games/Limbo";
 import Dice from "./games/Dice";
 import Plinko from "./games/Plinko";
+import Store from "./Store";
 import GameCards from "./GameCards";
 import { useState } from "react";
+import Hilo from "./games/Hilo";
 const MainPageMain = (props) => {
   let game = <></>;
   const [errorMsg, setErrorMsg] = useState("");
-
   switch (props.gametitle) {
     case "Mines":
       game = <Mines setBalance={props.setBalance} setError={setErrorMsg} />;
@@ -21,7 +22,15 @@ const MainPageMain = (props) => {
     case "Plinko":
       game = <Plinko setBalance={props.setBalance} setError={setErrorMsg} />;
       break;
+    case "Hilo":
+      game = <Hilo setBalance={props.setBalance} setError={setErrorMsg} />;
+      break;
+    case "Store":
+      game = <Store setBalance={props.setBalance} setError={setErrorMsg} />;
+      break;
     default:
+      game = <></>;
+      break;
   }
   return (
     <div

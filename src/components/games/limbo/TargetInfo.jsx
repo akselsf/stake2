@@ -4,7 +4,7 @@ const TargetInfo = (props) => {
     return target;
   };
   const getChance = (target) => {
-    return Math.round((1 / target) * 100000) / 1000;
+    return Math.round((1 / target) * 100000 * 0.99) / 1000;
   };
 
   return (

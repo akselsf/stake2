@@ -9,8 +9,7 @@ import {
   MenuList,
   Link,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import getBalance from "@/functions/getBalance";
+
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import DepositPopup from "./DepositPopup";
 import WithdrawPopup from "./WithdrawPopup";
@@ -21,9 +20,11 @@ const NavBar = (props) => {
       className={"h-24 w-full flex items-center justify-between"}
       style={{ backgroundColor: "white" }}
     >
-      <Heading marginLeft={10} size="2xl">
-        Gamble.com
-      </Heading>
+      <Link href="/" _hover={{ textDecoration: "none" }}>
+        <Heading marginLeft={10} size="2xl">
+          Gamble.com
+        </Heading>
+      </Link>
 
       <div className="flex items-center justify-end">
         <p className={"m-5 mr-2 text-xl font-semibold"}>
@@ -56,6 +57,11 @@ const NavBar = (props) => {
             <MenuItem>
               <Link href="/plinko" position={"relative"}>
                 Plinko
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href="/hilo" position={"relative"}>
+                Hilo
               </Link>
             </MenuItem>
           </MenuList>

@@ -31,7 +31,6 @@ const handleStartPlinko = async (req, res) => {
     res.status(400).json({ errormessage: "Not enough balance." });
     return;
   }
-
   let directions = [];
   let multiplier;
   let x = 0;
@@ -46,7 +45,7 @@ const handleStartPlinko = async (req, res) => {
 
   const winAmount = betamount * multiplier;
   user.balance += winAmount;
-  console.log(winAmount);
+
   await user.save();
   await mongoose.disconnect();
   res.status(200).json({
