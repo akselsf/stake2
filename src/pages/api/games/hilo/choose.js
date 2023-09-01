@@ -3,7 +3,7 @@ import handleGetUser from "../../functions/getuser";
 import { HiloGame } from "../../../../../mongooseschemas";
 
 import getCard from "./getcard";
-import getMultiplierHilo from "./getMultiplierHilo";
+import getmultiplierhilo from "./getmultiplierhilo";
 import getChanceHilo from "./getchancehilo";
 
 const handleChooseHilo = async (req, res) => {
@@ -142,7 +142,7 @@ const calculateMultipler = (allcards) => {
     if (allcards[i].skipped) {
       multiplier *= 1;
     } else {
-      multiplier *= getMultiplierHilo(allcards[i].card, allcards[i].option);
+      multiplier *= getmultiplierhilo(allcards[i].card, allcards[i].option);
     }
   }
   return Math.round(multiplier * 100) / 100;

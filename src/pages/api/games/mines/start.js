@@ -61,4 +61,4 @@ const handleStartMines = async (req, res) => {
   return;
 };
 
-module.exports = handleStartMines;
+export default handleStartMines;

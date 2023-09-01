@@ -21,4 +21,4 @@ const handleGetUser = async (req, res) => {
   return user;
 };
 
-module.exports = handleGetUser;
+export default handleGetUser;

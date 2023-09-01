@@ -61,4 +61,4 @@ const handleStartPlinko = async (req, res) => {
   return;
 };
 
-module.exports = handleStartPlinko;
+export default handleStartPlinko;

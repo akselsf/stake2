@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 import handleGetUser from "../../functions/getuser";
 import { HiloGame } from "../../../../../mongooseschemas";
-import getMultiplierHilo from "./getMultiplierHilo";
+import getMultiplierHilo from "./getmultiplierhilo"
 
 const handleCashOut = async (req, res) => {
   await mongoose.connect(process.env.DBURI);
@@ -60,4 +60,4 @@ const calculateMultipler = (allcards) => {
   return Math.round(multiplier * 100) / 100;
 };
 
-module.exports = handleCashOut;
+export default handleCashOut;

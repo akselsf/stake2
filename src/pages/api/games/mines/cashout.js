@@ -47,4 +47,4 @@ const handleCashOut = async (req, res) => {
   return;
 };
 
-module.exports = handleCashOut;
+export default handleCashOut;

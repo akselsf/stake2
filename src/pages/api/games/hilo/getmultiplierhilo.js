@@ -1,4 +1,4 @@
-const getMultiplierHilo = (card, option) => {
+const getmultiplierhilo = (card, option) => {
   if (option == "") return 1;
   const multipliers = {
     1: {
@@ -62,4 +62,4 @@ const getMultiplierHilo = (card, option) => {
   return 1;
 };
 
-module.exports = getMultiplierHilo;
+export default getmultiplierhilo;

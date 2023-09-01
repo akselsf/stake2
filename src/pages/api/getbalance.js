@@ -26,4 +26,4 @@ const handleGetBalance = async (req, res) => {
   res.status(200).json({ balance });
 };
 
-module.exports = handleGetBalance;
+export default handleGetBalance;

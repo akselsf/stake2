@@ -65,4 +65,4 @@ const handleStartLimbo = async (req, res) => {
   return;
 };
 
-module.exports = handleStartLimbo;
+export default handleStartLimbo;

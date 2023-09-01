@@ -22,7 +22,7 @@ const NavBar = (props) => {
     >
       <Link href="/" _hover={{ textDecoration: "none" }}>
         <Heading marginLeft={10} size="2xl">
-          Gamble.com
+          Stake2
         </Heading>
       </Link>
 

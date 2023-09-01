@@ -22,4 +22,4 @@ const handleDeposit = async (req, res) => {
   res.status(200).json({ balance: balance });
 };
 
-module.exports = handleDeposit;
+export default handleDeposit;

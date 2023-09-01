@@ -57,4 +57,4 @@ const handleStartHilo = async (req, res) => {
   return;
 };
 
-module.exports = handleStartHilo;
+export default handleStartHilo;

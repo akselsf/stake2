@@ -72,4 +72,4 @@ const handleStartDice = async (req, res) => {
   return;
 };
 
-module.exports = handleStartDice;
+export default handleStartDice;

@@ -28,4 +28,4 @@ const handleWithdraw = async (req, res) => {
   res.status(200).json({ balance: balance });
 };
 
-module.exports = handleWithdraw;
+export default handleWithdraw;

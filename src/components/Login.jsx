@@ -10,7 +10,7 @@ const Login = () => {
       height="100vh"
     >
       <Heading marginBottom={5} size={"2xl"}>
-        Gamble.com
+        Stake2
       </Heading>
       <Button colorScheme="gray" onClick={() => signIn()}>
         Log in / Registrer

@@ -15,4 +15,4 @@ const calculateMultiplier = (m, d) => {
   const result = 0.99 * (first / second);
   return Math.round(result * 100) / 100;
 };
-module.exports = calculateMultiplier;
+export default calculateMultiplier;
