@@ -39,8 +39,7 @@ const Mines = (props) => {
         props.setError("");
       }
       if (gamedata.gameinfo) {
-        e.target.style.animation = "wave 1s";
-
+   
         setMultiplier(
           `${gamedata.gameinfo.multiplier}x - $${gamedata.gameinfo.reward}`
         );
@@ -64,9 +63,7 @@ const Mines = (props) => {
 
         setBoard(b);
 
-        setTimeout(() => {
-          e.target.style.animation = "";
-        }, 1000);
+    
       }
     }
   };

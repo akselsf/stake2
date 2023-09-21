@@ -1,13 +1,10 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Spinner } from "@chakra-ui/react";
 const MineTile = (props) => {
   return (
     <Button
       isDisabled={!props.canSendReq}
       onClick={(e) => {
-        e.target.style.animation = "wave 1s";
-        setTimeout(() => {
-          e.target.style.animation = "";
-        }, 1000);
+        
         props.handleClick(e, props.value);
       }}
       _hover={
@@ -31,7 +28,9 @@ const MineTile = (props) => {
           : "red"
       }
       className={"hover:cursor-pointer shadow-md"}
-    ></Button>
+    >
+      {!props.canSendReq ? <Spinner></Spinner> : <></> }
+    </Button>
   );
 };
 export default MineTile;
