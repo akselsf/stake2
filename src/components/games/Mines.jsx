@@ -223,7 +223,7 @@ const Mines = (props) => {
           position={"absolute"}
           colorScheme="purple"
           bottom={5}
-          isDisabled={!canCashOut && ingame && canSendReq}
+          isDisabled={(!canCashOut && ingame) || canSendReq}
           onClick={
             ingame
               ? () => {
